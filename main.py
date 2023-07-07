@@ -5,7 +5,7 @@ import seaborn as sns
 import plotly.express as px
 import altair as alt
 import numpy as np
-import re`
+import re
 
 df = pd.read_csv("D:/train_clear.csv")
 
