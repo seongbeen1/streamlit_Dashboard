@@ -7,7 +7,7 @@ import altair as alt
 import numpy as np
 import re
 
-df = pd.read_csv("D:/train_clear.csv")
+df = pd.read_csv("D:\train_clear.csv")
 
 def main():
     st.set_page_config(layout='wide') # 화면 꽉차게
