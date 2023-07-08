@@ -7,7 +7,7 @@ import altair as alt
 import numpy as np
 import re
 
-df = pd.read_csv("train_clear.csv")
+df = pd.read_csv("D:/train_clear.csv")
 
 def main():
     st.set_page_config(layout='wide') # 화면 꽉차게
@@ -24,7 +24,8 @@ def main():
         'Bar Plot': 'bar',
         'Pie Plot': 'pie',
         'Histogram': 'histogram',
-        'Scatter Plot': 'scatter'
+        'Scatter Plot': 'scatter',
+        'Box Plot' : 'box'
     }
 
     #그래프 선택
@@ -32,6 +33,14 @@ def main():
     if graph_type == 'Bar Plot':
         st.subheader("bar chart")
         st.bar_chart(df,x=selected_column ,y='y')
+
+    elif graph_type == "Box Plot":
+        st.subheader("Box plot")
+        box_fig = plt.figure()
+        plt.boxplot(df['y'])
+        plt.xlabel("y")
+        st.pyplot(box_fig)
+
 
     elif graph_type == "Scatter Plot":
         st.subheader("Scatter Plot")
