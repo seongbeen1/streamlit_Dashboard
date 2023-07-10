@@ -6,17 +6,40 @@ import plotly.express as px
 import altair as alt
 import numpy as np
 import re
+from sklearn.preprocessing import OrdinalEncoder
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import r2_score
 
-df = pd.read_csv("train_clear.csv")
+df = pd.read_csv("D:/train_clear.csv")
+
+
+#linear regression 시작
+y = df['y']
+X = df.drop(['y', 'ID'], axis=1)
+categorical = X.select_dtypes(include='object').columns.values
+oe = OrdinalEncoder(handle_unknown="use_encoded_value", unknown_value=np.NaN)
+oe.fit(X[categorical])
+X[categorical] = oe.transform(X[categorical])
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
+reg = LinearRegression().fit(X_train, y_train)
+y_predict = reg.predict(X_test)
+r2score_test = r2_score(y_test, y_predict)
+y_train_predict = reg.predict(X_train)
+r2score_train = r2_score(y_train,y_train_predict)
+#linear regression 끝
 
 def main():
-    st.set_page_config(layout='wide') # 화면 꽉차게
-    st.title("시각화 그래프")
 
+    st.title("시각화 그래프")
     # 사용자가 선택한 컬럼을 담을 변수/ 'X'로 시작하는 컬럼만 표시
     pattern = "X"
     column_list = [col for col in df.columns if re.search(pattern, col)]
     selected_column = st.selectbox('Select a column', column_list)
+
+    if st.button('linear regression'):
+        st.subheader(f'「Test R2 score : {r2score_test}')
+        st.subheader(f' Train R2 score : {r2score_train}」')
 
     #그래프 옵션
     graph_options = {
@@ -31,11 +54,11 @@ def main():
     #그래프 선택
     graph_type = st.sidebar.selectbox('Select a graph type', list(graph_options.keys()))
     if graph_type == 'Bar Plot':
-        st.subheader("bar chart")
+        st.header("bar chart")
         st.bar_chart(df,x=selected_column ,y='y')
 
     elif graph_type == "Box Plot":
-        st.subheader("Box plot")
+        st.header("Box plot")
         box_fig = plt.figure()
         plt.boxplot(df['y'])
         plt.xlabel("y")
@@ -43,18 +66,18 @@ def main():
 
 
     elif graph_type == "Scatter Plot":
-        st.subheader("Scatter Plot")
+        st.header("Scatter Plot")
         scatter_plot = alt.Chart(df).mark_circle().encode(x=selected_column, y="y")
         st.altair_chart(scatter_plot, use_container_width= True)
 
     elif graph_type == "Violin Plot":
-        st.subheader("violin plot")
+        st.header("violin plot")
         v_fig = plt.figure()
         sns.violinplot(df, x=df[selected_column], y = "y")
         st.pyplot(v_fig)
 
     elif graph_type == "Pie Plot":
-        st.subheader("Pie chart")
+        st.header("Pie chart")
         pie_fig = plt.figure()
         a = df[selected_column].value_counts()
         plt.pie(a, autopct='%.2f%%')
@@ -66,7 +89,7 @@ def main():
         st.pyplot(pie_fig)
 
     elif graph_type == "Histogram":
-     st.subheader("histogram")
+     st.header("histogram")
      hist_fig = plt.figure()
      # X10부터 마지막 컬럼까지 1의 합 -> Series
      b = df.loc[:, "X10":].sum()
