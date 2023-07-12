@@ -31,53 +31,62 @@ r2score_train = r2_score(y_train,y_train_predict)
 
 def main():
 
-    st.title("시각화 그래프")
+    st.set_page_config(layout = 'wide') #화면 넓게
+    st.title("Mercedes-Benz Manufacturing Dashboard") #Title 작성
+
+    # 상단에 3개 컬럼 값들
+    col1,col2,col3 = st.columns(3)
+    col1.metric(
+        label = "R2 score : Train",
+        value = r2score_train
+    )
+    col2.metric(
+        label = "R2 score : Test",
+        value = r2score_test
+    )
+    col3.metric(
+        label="빈자리???",
+        value = 1
+    )
+
     # 사용자가 선택한 컬럼을 담을 변수/ 'X'로 시작하는 컬럼만 표시
     pattern = "X"
     column_list = [col for col in df.columns if re.search(pattern, col)]
     selected_column = st.selectbox('Select a column', column_list)
 
-    if st.button('linear regression'):
-        st.subheader(f'「Test R2 score : {r2score_test}')
-        st.subheader(f' Train R2 score : {r2score_train}」')
+    #그래프 삽입
+    fig_col1,fig_col2,fig_col3 = st.columns(3)
+    fig_col4,fig_col5,fig_col6 = st.columns(3)
 
-    #그래프 옵션
-    graph_options = {
-        'Violin Plot': 'violin',
-        'Bar Plot': 'bar',
-        'Pie Plot': 'pie',
-        'Histogram': 'histogram',
-        'Scatter Plot': 'scatter',
-        'Box Plot' : 'box'
-    }
 
-    #그래프 선택
-    graph_type = st.sidebar.selectbox('Select a graph type', list(graph_options.keys()))
-    if graph_type == 'Bar Plot':
-        st.header("bar chart")
-        st.bar_chart(df,x=selected_column ,y='y')
+    with fig_col1:
+        st.markdown("### Bar Chart")
+        st.bar_chart(df, x=selected_column, y='y')
 
-    elif graph_type == "Box Plot":
-        st.header("Box plot")
+
+    with fig_col2:
+        st.markdown("### Box Plot")
         box_fig = plt.figure()
         plt.boxplot(df['y'])
         plt.xlabel("y")
         st.pyplot(box_fig)
 
 
-    elif graph_type == "Scatter Plot":
-        st.header("Scatter Plot")
+    with fig_col3:
+        st.markdown("### Scatter Plot")
         scatter_plot = alt.Chart(df).mark_circle().encode(x=selected_column, y="y")
-        st.altair_chart(scatter_plot, use_container_width= True)
+        st.altair_chart(scatter_plot, use_container_width=True)
 
-    elif graph_type == "Violin Plot":
-        st.header("violin plot")
+
+    with fig_col4:
+        st.markdown("### violin plot")
         v_fig = plt.figure()
         sns.violinplot(df, x=df[selected_column], y = "y")
         st.pyplot(v_fig)
 
-    elif graph_type == "Pie Plot":
-        st.header("Pie chart")
+
+    with fig_col5:
+        st.markdown("### Pie chart")
         pie_fig = plt.figure()
         a = df[selected_column].value_counts()
         plt.pie(a, autopct='%.2f%%')
@@ -88,19 +97,22 @@ def main():
         plt.xlabel(selected_column)
         st.pyplot(pie_fig)
 
-    elif graph_type == "Histogram":
-     st.header("histogram")
-     hist_fig = plt.figure()
-     # X10부터 마지막 컬럼까지 1의 합 -> Series
-     b = df.loc[:, "X10":].sum()
-     # Series를 DataFrame으로 변경
-     c = pd.DataFrame(b)
-     # Histogram
-     plt.hist(c, bins=100)
-     # 축 제목 설정
-     plt.xlabel("number of 1")
-     plt.ylabel("frequency")
-     st.pyplot(hist_fig)
+
+    with fig_col6:
+        st.markdown("### Histogram")
+        hist_fig = plt.figure()
+        # X10부터 마지막 컬럼까지 1의 합 -> Series
+        b = df.loc[:, "X10":].sum()
+        # Series를 DataFrame으로 변경
+        c = pd.DataFrame(b)
+        # Histogram
+        plt.hist(c, bins=100)
+        # 축 제목 설정
+        plt.xlabel("number of 1")
+        plt.ylabel("frequency")
+        st.pyplot(hist_fig)
+
+
 
 if __name__ == '__main__':
     main()
