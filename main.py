@@ -38,16 +38,16 @@ def main():
     # 상단에 3개 컬럼 값들
     col1,col2,col3 = st.columns(3)
     col1.metric(
-        label = "R2 score : Train",
-        value = r2score_train
+        label = "정확도",
+        value = 1
     )
     col2.metric(
-        label = "R2 score : Test",
-        value = r2score_test
+        label = "정밀도",
+        value = 2
     )
     col3.metric(
-        label="빈자리???",
-        value = 1
+        label="재현율",
+        value = 3
     )
     checkbox_value = st.checkbox("Y값만 표시")
 
