@@ -62,7 +62,7 @@ def main():
             ax1.patch.set_alpha(0)
             st.pyplot(fig1)
         with fig_col_b:
-            image = Image.open('D:/image.png')  # 이미지 파일 경로
+            image = Image.open('image.png')  # 이미지 파일 경로
             st.image(image, caption=' ', use_column_width=True)
     else:
         pattern = "X"
