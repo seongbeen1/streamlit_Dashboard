@@ -7,4 +7,4 @@ altair
 numpy
 scikit-learn
 Image
-plotly.graph_objects
+
