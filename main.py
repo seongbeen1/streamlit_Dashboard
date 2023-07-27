@@ -35,20 +35,18 @@ def main():
     st.set_page_config(layout='wide')  # 화면 넓게
     st.title("Mercedes-Benz Manufacturing Dashboard") #Title 작성
 
-    # 상단에 3개 컬럼 값들
-    col1,col2,col3 = st.columns(3)
-    col1.metric(
-        label = "정확도",
-        value = 1
-    )
-    col2.metric(
-        label = "정밀도",
-        value = 2
-    )
-    col3.metric(
-        label="재현율",
-        value = 3
-    )
+    col1, col2, col3 = st.columns(3)
+    col4, col5, col6 = st.columns(3)
+
+    # Populate the columns with the desired content
+    col1.metric(label="Model : LightGBM")
+    col2.metric(label="Train MAE", value=5.00)
+    col3.metric(label="Train R2 Score", value=0.60)
+
+    # Content for the second row
+    col4.metric(label="",)
+    col5.metric(label="Test MAE", value=5.30)
+    col6.metric(label="Test R2 Score", value=0.59)
     checkbox_value = st.checkbox("Y값만 표시")
 
     # 체크 여부에 따른 동작
