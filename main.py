@@ -39,12 +39,12 @@ def main():
     col4, col5, col6 = st.columns(3)
 
     # Populate the columns with the desired content
-    col1.metric(label="Model : LightGBM")
+    col1.metric(label="Model : LightGBM", value = None)
     col2.metric(label="Train MAE", value=5.00)
     col3.metric(label="Train R2 Score", value=0.60)
 
     # Content for the second row
-    col4.metric(label="",)
+    col4.metric(label="",value = None)
     col5.metric(label="Test MAE", value=5.30)
     col6.metric(label="Test R2 Score", value=0.59)
     checkbox_value = st.checkbox("Y값만 표시")
