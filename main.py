@@ -39,7 +39,7 @@ def main():
     col4, col5, col6 = st.columns(3)
 
     # Populate the columns with the desired content
-    col1.metric(label="Model : LightGBM", value = None)
+    col1.metric("<h1>Model : LightGBM</h1>", value=None, unsafe_allow_html=True)
     col2.metric(label="Train MAE", value=5.00)
     col3.metric(label="Train R2 Score", value=0.60)
 
